@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: bot
+    description: Public bot availability and command catalog
 paths:
   /healthz:
     get:
@@ -24,6 +26,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /bot/overview:
+    get:
+      operationId: getBotOverview
+      tags: [bot]
+      summary: Get bot status and command catalog
+      description: Returns non-sensitive runtime status for the public dashboard
+      responses:
+        "200":
+          description: Bot overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BotOverview"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +48,32 @@ components:
           type: string
       required:
         - status
+    BotCommand:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+      required: [name, description, category]
+    BotOverview:
+      type: object
+      properties:
+        connected:
+          type: boolean
+        guildCount:
+          type: integer
+        botTag:
+          type: ["string", "null"]
+        applicationId:
+          type: ["string", "null"]
+        commandCount:
+          type: integer
+        commands:
+          type: array
+          items:
+            $ref: "#/components/schemas/BotCommand"
+      required: [connected, guildCount, botTag, applicationId, commandCount, commands]
 

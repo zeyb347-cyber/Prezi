@@ -1,0 +1,1 @@
+- [Discord integration boundaries](discord-integration-scope.md) — user OAuth does not replace a dedicated bot token for moderation actions.
