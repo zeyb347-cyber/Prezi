@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Moderation Bot"
+description = "A secure Discord moderation bot with an admin dashboard for server-scoped command permissions, role hierarchy protection, aliases, warnings, audit logs, and moderation settings."
+version = "1.0.0"
+id = "artifacts/moderation-bot"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19934
+
+[services.development]
+run = "pnpm --filter @workspace/moderation-bot run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/moderation-bot", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/moderation-bot/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19934"
+BASE_PATH = "/"
